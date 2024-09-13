@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { ZodError } from 'zod';
 import { envSchema } from '../schemas';
 

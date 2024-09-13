@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { AppDataSource } from '../db/data-source';
 
 export const connectDatabase = async () => {
