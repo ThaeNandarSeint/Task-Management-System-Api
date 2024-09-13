@@ -5,9 +5,11 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Task } from '../task/task.entity';
 
 @Entity({ name: 'users' })
 @Index(['userId', 'email'], { unique: true })
@@ -15,24 +17,27 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 100, nullable: true })
-  email: string;
-
   @Column({ length: 100 })
   username: string;
+
+  @Column({ length: 100 })
+  email: string;
 
   @Column({ select: false })
   password: string;
 
-  @Column({ name: 'user_id', type: 'varchar', length: 100 })
+  @Column({ length: 100 })
   userId: string;
 
-  @Column({ name: 'is_active', type: 'boolean', default: true })
+  @Column({ default: true })
   isActive: boolean;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Task, (task) => task.user)
+  tasks: Task[];
 }

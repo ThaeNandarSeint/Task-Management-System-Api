@@ -12,7 +12,7 @@
     "strictPropertyInitialization": false,
     "baseUrl": "./",
     "paths": {
-      "@src/*": ["src/*"]
+      "@/*": ["src/*"]
     },
     "resolveJsonModule": true,
     "outDir": "./dist",
