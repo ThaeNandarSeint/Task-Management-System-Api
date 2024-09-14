@@ -36,16 +36,16 @@ export class TaskRepository {
   }
 
   async findTaskById(id: number): Promise<Task | undefined> {
-    return Task.findOne({ id });
+    return await Task.findOne({ id });
   }
 
   async createTask(data: Task): Promise<Task> {
-    return Task.save(data);
+    return await Task.save(data);
   }
 
   async updateTask(id: number, task: Partial<Task>): Promise<Task | undefined> {
     await Task.update(id, task);
-    return Task.findOne({ id });
+    return await Task.findOne({ id });
   }
 
   async deleteTask(id: number): Promise<void> {

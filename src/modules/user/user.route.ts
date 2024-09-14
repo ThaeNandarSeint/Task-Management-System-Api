@@ -21,4 +21,9 @@ router.get(
   catchAsync((req, res) => userController.getMyInfo(req, res))
 );
 
+router.patch(
+  '/me',
+  catchAsync((req, res) => userController.updateMyProfile(req, res))
+);
+
 export { router };

@@ -4,33 +4,33 @@ import { GetUsersDto } from './types';
 import { hashPassword } from '../../libs/bcrypt';
 
 export class UserService {
-  private repository: UserRepository;
+  private userRepository: UserRepository;
 
   constructor() {
-    this.repository = new UserRepository();
+    this.userRepository = new UserRepository();
   }
 
   async findUsers(
     query: GetUsersDto
   ): Promise<{ users: User[]; count: number }> {
-    return this.repository.findUsers(query);
+    return await this.userRepository.findUsers(query);
   }
 
   async findUserById(id: number): Promise<User | undefined> {
-    return this.repository.findUserById(id);
+    return await this.userRepository.findUserById(id);
   }
 
   async findUserByUniqueField(data: {
     [key: string]: unknown;
   }): Promise<User | undefined> {
-    return this.repository.findUserByUniqueField(data);
+    return await this.userRepository.findUserByUniqueField(data);
   }
 
   async createUser(data: User): Promise<User> {
-    const userId = await this.generateCustomUserId();
+    const userId = await this.generateCustomId();
     const hashedPassword = await this.hashPassword(data.password);
 
-    return this.repository.createUser({
+    return await this.userRepository.createUser({
       ...data,
       userId,
       password: hashedPassword,
@@ -41,15 +41,15 @@ export class UserService {
     id: number,
     taskUpdates: Partial<User>
   ): Promise<User | undefined> {
-    return this.repository.updateUser(id, taskUpdates);
+    return await this.userRepository.updateUser(id, taskUpdates);
   }
 
   async deleteUser(id: number): Promise<void> {
-    await this.repository.deleteUser(id);
+    await this.userRepository.deleteUser(id);
   }
 
-  private async generateCustomUserId() {
-    const { users } = await this.repository.findUsers({
+  private async generateCustomId() {
+    const { users } = await this.userRepository.findUsers({
       sort: 'id',
       limit: 1,
       skip: 0,

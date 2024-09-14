@@ -30,22 +30,22 @@ export class UserRepository {
   }
 
   async findUserById(id: number): Promise<User | undefined> {
-    return User.findOne({ id });
+    return await User.findOne({ id });
   }
 
   async findUserByUniqueField(data: {
     [key: string]: unknown;
   }): Promise<User | undefined> {
-    return User.findOne(data);
+    return await User.findOne(data);
   }
 
   async createUser(task: User): Promise<User> {
-    return User.save(task);
+    return await User.save(task);
   }
 
   async updateUser(id: number, task: Partial<User>): Promise<User | undefined> {
     await User.update(id, task);
-    return User.findOne({ id });
+    return await User.findOne({ id });
   }
 
   async deleteUser(id: number): Promise<void> {

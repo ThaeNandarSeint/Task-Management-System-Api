@@ -3,40 +3,40 @@ import { TaskRepository } from './task.repository';
 import { GetTasksDto } from './types';
 
 export class TaskService {
-  private repository: TaskRepository;
+  private taskRepository: TaskRepository;
 
   constructor() {
-    this.repository = new TaskRepository();
+    this.taskRepository = new TaskRepository();
   }
 
   async findTasks(
     query: GetTasksDto
   ): Promise<{ tasks: Task[]; count: number }> {
-    return this.repository.findTasks(query);
+    return this.taskRepository.findTasks(query);
   }
 
   async findTaskById(id: number): Promise<Task | undefined> {
-    return this.repository.findTaskById(id);
+    return this.taskRepository.findTaskById(id);
   }
 
   async createTask(data: Task): Promise<Task> {
     const taskId = await this.generateCustomId();
-    return this.repository.createTask({ ...data, taskId } as Task);
+    return this.taskRepository.createTask({ ...data, taskId } as Task);
   }
 
   async updateTask(
     id: number,
     taskUpdates: Partial<Task>
   ): Promise<Task | undefined> {
-    return this.repository.updateTask(id, taskUpdates);
+    return this.taskRepository.updateTask(id, taskUpdates);
   }
 
   async deleteTask(id: number): Promise<void> {
-    await this.repository.deleteTask(id);
+    await this.taskRepository.deleteTask(id);
   }
 
   private async generateCustomId() {
-    const { tasks } = await this.repository.findTasks({
+    const { tasks } = await this.taskRepository.findTasks({
       sort: 'id',
       limit: 1,
       skip: 0,
@@ -47,6 +47,6 @@ export class TaskService {
       return 'T1';
     }
 
-    return `T${Number(lastTask.taskId.replace('U', '')) + 1}`;
+    return `T${Number(lastTask.taskId.replace('T', '')) + 1}`;
   }
 }
