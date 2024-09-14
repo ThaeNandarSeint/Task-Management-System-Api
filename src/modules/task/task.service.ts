@@ -1,5 +1,6 @@
 import { Task } from './task.entity';
 import { TaskRepository } from './task.repository';
+import { GetTasksDto } from './types';
 
 export class TaskService {
   private repository: TaskRepository;
@@ -8,8 +9,10 @@ export class TaskService {
     this.repository = new TaskRepository();
   }
 
-  async findTasks(): Promise<Task[]> {
-    return this.repository.findTasks();
+  async findTasks(
+    query: GetTasksDto
+  ): Promise<{ tasks: Task[]; count: number }> {
+    return this.repository.findTasks(query);
   }
 
   async findTaskById(id: number): Promise<Task | undefined> {
@@ -17,7 +20,8 @@ export class TaskService {
   }
 
   async createTask(data: Task): Promise<Task> {
-    return this.repository.createTask(data);
+    const taskId = await this.generateCustomId();
+    return this.repository.createTask({ ...data, taskId } as Task);
   }
 
   async updateTask(
@@ -29,5 +33,20 @@ export class TaskService {
 
   async deleteTask(id: number): Promise<void> {
     await this.repository.deleteTask(id);
+  }
+
+  private async generateCustomId() {
+    const { tasks } = await this.repository.findTasks({
+      sort: 'id',
+      limit: 1,
+      skip: 0,
+    });
+    const lastTask = tasks[0];
+
+    if (!lastTask || !lastTask.taskId) {
+      return 'T1';
+    }
+
+    return `T${Number(lastTask.taskId.replace('U', '')) + 1}`;
   }
 }

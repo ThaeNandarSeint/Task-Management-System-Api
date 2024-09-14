@@ -1,16 +1,20 @@
 import { Request, Response } from 'express';
 import { TaskUseCase } from './task.usecase';
 import { sendSuccessResponse } from '../../utils';
-
+import { GetTasksDto } from './types';
+import { AuthRequest } from '../../interfaces';
+import { Task } from './task.entity';
 export class TaskController {
-  private useCase: TaskUseCase;
+  private taskUseCase: TaskUseCase;
 
   constructor() {
-    this.useCase = new TaskUseCase();
+    this.taskUseCase = new TaskUseCase();
   }
 
   async findTasks(req: Request, res: Response): Promise<void> {
-    const data = await this.useCase.findTasks();
+    const data = await this.taskUseCase.findTasks(
+      req.query as unknown as GetTasksDto
+    );
     sendSuccessResponse({
       res,
       data,
@@ -18,16 +22,18 @@ export class TaskController {
   }
 
   async findTaskById(req: Request, res: Response): Promise<void> {
-    const task = await this.useCase.findTaskById(+req.params.id);
-    if (!task) {
-      res.status(404).json({ message: 'Task not found' });
-      return;
-    }
-    res.json(task);
+    const data = await this.taskUseCase.findTaskById(+req.params.id);
+    sendSuccessResponse({
+      res,
+      data,
+    });
   }
 
   async createTask(req: Request, res: Response): Promise<void> {
-    const data = await this.useCase.createTask(req.body);
+    const data = await this.taskUseCase.createTask({
+      ...req.body,
+      userId: (req as unknown as AuthRequest)?.user?.id,
+    } as Task);
     sendSuccessResponse({
       res,
       data,
@@ -35,16 +41,18 @@ export class TaskController {
   }
 
   async updateTask(req: Request, res: Response): Promise<void> {
-    const task = await this.useCase.updateTask(+req.params.id, req.body);
-    if (!task) {
-      res.status(404).json({ message: 'Task not found' });
-      return;
-    }
-    res.json(task);
+    const data = await this.taskUseCase.updateTask(+req.params.id, req.body);
+    sendSuccessResponse({
+      res,
+      data,
+    });
   }
 
   async deleteTask(req: Request, res: Response): Promise<void> {
-    await this.useCase.deleteTask(+req.params.id);
-    res.status(204).send();
+    await this.taskUseCase.deleteTask(+req.params.id);
+    sendSuccessResponse({
+      res,
+      data: null,
+    });
   }
 }

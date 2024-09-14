@@ -1,7 +1,31 @@
+import { FindManyOptions, ILike } from 'typeorm';
 import { Task } from './task.entity';
+import { GetTasksDto } from './types';
 export class TaskRepository {
-  async findTasks(): Promise<Task[]> {
-    return Task.find();
+  async findTasks({
+    search,
+    limit,
+    skip,
+    sort,
+  }: GetTasksDto): Promise<{ tasks: Task[]; count: number }> {
+    const where: FindManyOptions<Task>['where'] = [];
+
+    if (search) {
+      where.push({
+        username: ILike(`%${search}%`),
+      });
+    }
+
+    const [tasks, count] = await Task.findAndCount({
+      where,
+      take: limit,
+      skip,
+      order: {
+        [sort ?? 'id']: 'desc',
+      },
+    });
+
+    return { tasks, count };
   }
 
   async findTaskById(id: number): Promise<Task | undefined> {
@@ -9,7 +33,7 @@ export class TaskRepository {
   }
 
   async createTask(data: Task): Promise<Task> {
-    return Task.create(data);
+    return Task.save(data);
   }
 
   async updateTask(id: number, task: Partial<Task>): Promise<Task | undefined> {
