@@ -3,4 +3,5 @@ export type GetTasksDto = {
   limit: number;
   sort: string;
   search?: string;
+  userId?: number;
 };

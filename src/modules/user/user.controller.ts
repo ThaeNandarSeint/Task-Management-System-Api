@@ -2,12 +2,23 @@ import { Request, Response } from 'express';
 import { UserUseCase } from './user.usecase';
 import { sendSuccessResponse } from '../../utils';
 import { GetUsersDto } from './types';
+import { AuthRequest } from '@/interfaces';
 
 export class UserController {
   private useCase: UserUseCase;
 
   constructor() {
     this.useCase = new UserUseCase();
+  }
+
+  async getMyInfo(req: Request, res: Response): Promise<void> {
+    const data = await this.useCase.findUserById(
+      (req as unknown as AuthRequest)?.user?.id as number
+    );
+    sendSuccessResponse({
+      res,
+      data,
+    });
   }
 
   async findUsers(req: Request, res: Response): Promise<void> {

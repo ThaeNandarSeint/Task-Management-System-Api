@@ -5,7 +5,12 @@ import { errorHandler } from './middlewares';
 import router from './routes';
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: (_, callback) => callback(null, true),
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

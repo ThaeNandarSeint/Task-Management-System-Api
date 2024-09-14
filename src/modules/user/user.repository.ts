@@ -13,7 +13,7 @@ export class UserRepository {
 
     if (search) {
       where.push({
-        username: ILike(`%${search}%`),
+        name: ILike(`%${search}%`),
       });
     }
 

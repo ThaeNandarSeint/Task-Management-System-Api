@@ -21,6 +21,11 @@ export const updateTaskSchema = z
       .pick({
         title: true,
       })
-      .partial(),
+      .partial()
+      .merge(
+        z.object({
+          isCompleted: z.boolean().default(false),
+        })
+      ),
   })
   .merge(paramIdSchema);

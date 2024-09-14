@@ -30,7 +30,7 @@ export const sendSuccessResponse = ({
 }) => {
   res.status(code).json({
     code,
-    data,
+    payload: data,
     message,
   });
 };

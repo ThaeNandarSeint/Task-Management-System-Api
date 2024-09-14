@@ -12,9 +12,10 @@ export class TaskController {
   }
 
   async findTasks(req: Request, res: Response): Promise<void> {
-    const data = await this.taskUseCase.findTasks(
-      req.query as unknown as GetTasksDto
-    );
+    const data = await this.taskUseCase.findTasks({
+      userId: (req as unknown as AuthRequest)?.user?.id,
+      ...req.query,
+    } as unknown as GetTasksDto);
     sendSuccessResponse({
       res,
       data,

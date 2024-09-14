@@ -7,12 +7,19 @@ export class TaskRepository {
     limit,
     skip,
     sort,
+    userId,
   }: GetTasksDto): Promise<{ tasks: Task[]; count: number }> {
     const where: FindManyOptions<Task>['where'] = [];
 
     if (search) {
       where.push({
-        username: ILike(`%${search}%`),
+        title: ILike(`%${search}%`),
+      });
+    }
+
+    if (userId) {
+      where.push({
+        userId,
       });
     }
 
