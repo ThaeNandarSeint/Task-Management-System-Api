@@ -1,32 +1,23 @@
-import { Repository } from 'typeorm';
 import { Task } from './task.entity';
-import { AppDataSource } from '@/db/data-source';
-
 export class TaskRepository {
-  private repository: Repository<Task>;
-
-  constructor() {
-    this.repository = AppDataSource.getRepository(Task);
-  }
-
   async findTasks(): Promise<Task[]> {
-    return this.repository.find();
+    return Task.find();
   }
 
-  async findTaskById(id: number): Promise<Task | null> {
-    return this.repository.findOneBy({ id });
+  async findTaskById(id: number): Promise<Task | undefined> {
+    return Task.findOne({ id });
   }
 
-  async createTask(task: Task): Promise<Task> {
-    return this.repository.save(task);
+  async createTask(data: Task): Promise<Task> {
+    return Task.create(data);
   }
 
-  async updateTask(id: number, task: Partial<Task>): Promise<Task | null> {
-    await this.repository.update(id, task);
-    return this.repository.findOneBy({ id });
+  async updateTask(id: number, task: Partial<Task>): Promise<Task | undefined> {
+    await Task.update(id, task);
+    return Task.findOne({ id });
   }
 
   async deleteTask(id: number): Promise<void> {
-    await this.repository.delete(id);
+    await Task.delete(id);
   }
 }

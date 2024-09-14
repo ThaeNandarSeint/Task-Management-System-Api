@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -11,12 +12,12 @@ import { Task } from '../task/task.entity';
 
 @Entity({ name: 'users' })
 @Index(['userId', 'email'], { unique: true })
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ length: 100 })
-  username: string;
+  name: string;
 
   @Column({ length: 100 })
   email: string;

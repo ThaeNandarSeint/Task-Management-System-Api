@@ -4,7 +4,7 @@ export class ApiError extends Error {
   statusCode: number;
   data: unknown;
 
-  constructor(message: string, statusCode: number, data = null) {
+  constructor(message: string, statusCode: number, data: unknown = null) {
     super(message);
     this.statusCode = statusCode;
     this.data = data;
@@ -12,18 +12,21 @@ export class ApiError extends Error {
     Error.captureStackTrace(this, this.constructor);
   }
 
-  static badRequest(message = globalErrors.BAD_REQUEST, data = null) {
+  static badRequest(message = globalErrors.BAD_REQUEST, data: unknown = null) {
     return new ApiError(message, 400, data);
   }
 
   static notAuthenticated(
     message = globalErrors.NOT_AUTHENTICATED,
-    data = null
+    data: unknown = null
   ) {
     return new ApiError(message, 401, data);
   }
 
-  static notAuthorized(message = globalErrors.NOT_AUTHORIZED, data = null) {
+  static notAuthorized(
+    message = globalErrors.NOT_AUTHORIZED,
+    data: unknown = null
+  ) {
     return new ApiError(message, 403, data);
   }
 

@@ -23,9 +23,10 @@ export const sendSuccessResponse = ({
   code = 200,
 }: {
   res: Response;
-  data: unknown;
-  message: string;
-  code: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
+  message?: string;
+  code?: number;
 }) => {
   res.status(code).json({
     code,

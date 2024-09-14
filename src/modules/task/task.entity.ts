@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -9,8 +10,8 @@ import {
 } from 'typeorm';
 import { User } from '../user/user.entity';
 
-@Entity({ name: 'categories' })
-export class Task {
+@Entity({ name: 'tasks' })
+export class Task extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

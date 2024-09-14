@@ -8,4 +8,10 @@ export const envSchema = z.object({
   DATABASE_URL: z.string({
     required_error: 'DATABASE_URL is missing.',
   }),
+  ACCESS_TOKEN_SECRET: z.string({
+    required_error: 'ACCESS_TOKEN_SECRET is missing.',
+  }),
+  ACCESS_TOKEN_EXPIRE_TIME: z.string({
+    required_error: 'ACCESS_TOKEN_EXPIRE_TIME is missing.',
+  }),
 });

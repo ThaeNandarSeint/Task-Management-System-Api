@@ -1,0 +1,17 @@
+import { Router } from 'express';
+import { catchAsync } from '../../utils';
+import { UserController } from './user.controller';
+import { validateSchema } from '../../middlewares';
+import { getUsersSchema } from './user.schema';
+
+const router = Router();
+
+const userController = new UserController();
+
+router.get(
+  '/',
+  validateSchema(getUsersSchema),
+  catchAsync((req, res) => userController.findUsers(req, res))
+);
+
+export { router };
