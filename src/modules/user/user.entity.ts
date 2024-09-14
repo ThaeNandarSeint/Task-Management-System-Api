@@ -22,7 +22,7 @@ export class User extends BaseEntity {
   @Column({ length: 100 })
   email: string;
 
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @Column({ length: 100 })

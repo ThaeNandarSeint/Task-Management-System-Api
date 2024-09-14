@@ -16,4 +16,12 @@ export class AuthController {
       data,
     });
   }
+
+  async login(req: Request, res: Response): Promise<void> {
+    const data = await this.authUseCase.login(req.body);
+    sendSuccessResponse({
+      res,
+      data,
+    });
+  }
 }
