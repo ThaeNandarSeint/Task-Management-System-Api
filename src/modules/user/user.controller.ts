@@ -29,14 +29,6 @@ export class UserController {
     res.json(task);
   }
 
-  async createUser(req: Request, res: Response): Promise<void> {
-    const data = await this.useCase.createUser(req.body);
-    sendSuccessResponse({
-      res,
-      data,
-    });
-  }
-
   async updateUser(req: Request, res: Response): Promise<void> {
     const task = await this.useCase.updateUser(+req.params.id, req.body);
     if (!task) {
