@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get(['/', '/api'], (req, res) => {
-  res.send(`Social Media API - ${process.env.NODE_ENV}`);
+  res.send(`Task Management System API - ${process.env.NODE_ENV}`);
 });
 
 app.use('/api', router);
